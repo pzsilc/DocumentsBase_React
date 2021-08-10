@@ -62,13 +62,13 @@ const Form = props => {
                                     <input 
                                         type='radio' 
                                         name='reason' 
-                                        value={reason.id}
-                                        id={`reason_${reason.id}`}
+                                        value={reason.pk}
+                                        id={`reason_${reason.pk}`}
                                         onChange={props.onChange} 
-                                        checked={props.props.formData.reason == reason.id}
+                                        checked={props.props.formData.reason == reason.pk}
                                         required
                                     />
-                                    <label htmlFor={`reason_${reason.id}`}>{reason.name}</label>
+                                    <label htmlFor={`reason_${reason.pk}`}>{reason.name}</label>
                                 </li>
                             )}
                         </ul>

@@ -73,7 +73,7 @@ class MessageHandler{
     static postMessage = data => new Promise((resolve, reject) => {
         let formData = new FormData();
         formData.append('content', data.content);
-        formData.append('owner_email', data.owner_email);
+        formData.append('sender_email', data.owner_email);
         formData.append('complaint', data.complaint);
         data.images.forEach((img, index) => formData.append('file_' + index, img));
         axios.post(API + '/messages/', formData, {
@@ -117,7 +117,7 @@ class ComplaintsHandler{
         formData.append('reason', data.reason);
         formData.append('document_number', data.document_number);
         formData.append('email', data.email);
-        data.images.forEach((img, index) => formData.append('file_' + index, img));
+        formData.append('images', JSON.stringify(data.images));
         axios.post(API + '/complaints/', formData, {
             headers: {
                 'Content-Type': `multipart/form-data`,
@@ -154,23 +154,13 @@ class ComplaintsHandler{
     })
 
     static checkIfExistsByDocumentNumber = document_number => new Promise((resolve, reject) => {
-        axios.post(API + `/documents/`, { document_number }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            }
-        })
+        axios.get(API + `/documents/?code=${document_number}`)
         .then(res => resolve(res))
         .then(err => reject(err));
     })
 
     static getOrderByComplaintKey = key => new Promise((resolve, reject) => {
-        axios.post(API + `/documents/orders/`, { key }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            }
-        })
+        axios.get(API + `/documents/details/${key}/`)
         .then(res => resolve(res))
         .then(err => reject(err));
     })

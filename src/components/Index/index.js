@@ -49,18 +49,13 @@ const Index = props => {
     }
 
     if(!$.isEmptyObject(props.result)){
+        console.log(props.result)
         return(
             <div className="text-center bg-green-400 pt-32 pb-36" style={{ marginTop: '-23px', marginBottom: '-140px' }}>
                 <i className="fa fa-check text-green-600 text-9xl"></i>
                 <p className="text-green-600 text-xl mt-10">Twoja reklamacja została zapisana</p>
                 <div className="my-64">
-                    <h6 className="inline-block mr-3">Link do reklamacji: </h6>
-                    <Link 
-                        to={`/complaint/${props.result.key}`} 
-                        className="text-green-100"
-                    >
-                        {`${window.location.href}complaint/${props.result.key}`}
-                    </Link>
+                    Za chwilę otrzymasz link do reklamacji na podany adres email
                 </div>
             </div>
         )
