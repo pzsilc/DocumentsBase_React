@@ -17,7 +17,7 @@ const Images = props => {
         setIsViewerOpen(false);
     };
 
-    const images = props.images ? props.images.map(img => packageJson.backendUrl + '/media/images/' + img.name) : [];
+    const images = props.images ? props.images.map(img => packageJson.backendUrl + '/media/' + img) : [];
 
     return(
         <div className="flex flex-wrap content-center">

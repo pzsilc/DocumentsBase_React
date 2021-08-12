@@ -12,10 +12,10 @@ const Messages = props => {
             {props.messages.map((message, key) => 
                 <div 
                     key={key}
-                    className={`border p-4 m-2 w-10/12 ${props.email === message.owner_email ? '': 'ml-auto'}`}
+                    className={`border p-4 m-2 w-10/12 ${props.email === message.sender_email ? '': 'ml-auto'}`}
                 >
                     <div className="flex justify-between">
-                        <p>{message.owner_email}</p>
+                        <p>{message.sender_email}</p>
                         <p className="text-gray-400">{message.created_at}</p>
                     </div>
                     <br/>

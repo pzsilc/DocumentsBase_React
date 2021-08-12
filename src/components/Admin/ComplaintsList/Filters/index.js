@@ -20,7 +20,7 @@ const Filters = props => {
     const switchDisplayed = () => setDisplayed(!displayed);
 
     return(
-       <div className="mx-auto w-11/12 md:w-1/2 border p-5">
+       <div className="mx-auto w-11/12 lg:w-3/4 xl:w-1/2 border p-5">
             <button
                 onClick={switchDisplayed}
                 className="text-2xl cursor-pointer"
@@ -42,7 +42,8 @@ const Filters = props => {
                             <b>Od:</b>
                             <input 
                                 type="date" 
-                                name="from_date"
+                                name="min_date"
+                                value={props.filters.min_date}
                                 onChange={props.onChange}
                                 className="ml-2"
                             />
@@ -56,7 +57,8 @@ const Filters = props => {
                             <b>Do:</b>
                             <input 
                                 type="date" 
-                                name="to_date"
+                                name="max_date"
+                                value={props.filters.max_date}
                                 onChange={props.onChange}
                                 className="ml-2"
                             />
@@ -66,7 +68,7 @@ const Filters = props => {
                         <label>
                             <b>Powód:</b>
                             <select
-                                name="reason_id"
+                                name="reason"
                                 onChange={props.onChange}
                                 className="block md:inline-block"
                             >
@@ -74,7 +76,8 @@ const Filters = props => {
                                 {props.reasons.map((reason, key) => 
                                     <option 
                                         key={key}
-                                        value={reason.id}
+                                        value={reason.pk}
+                                        selected={reason.pk == props.filters.reason}
                                     >{reason.name}</option>
                                 )}
                             </select>
@@ -83,7 +86,7 @@ const Filters = props => {
                         <label>
                             <b>Status:</b>
                             <select
-                                name="status_id"
+                                name="status"
                                 onChange={props.onChange}
                                 className="block md:inline-block"
                             >
@@ -91,7 +94,8 @@ const Filters = props => {
                                 {props.statuses.map((status, key) => 
                                     <option 
                                         key={key}
-                                        value={status.id}
+                                        value={status.pk}
+                                        selected={status.pk == props.filters.status}
                                     >{status.name}</option>
                                 )}
                             </select>
@@ -103,8 +107,9 @@ const Filters = props => {
                         <b>Szukaj:</b>
                         <input 
                             type="text" 
-                            name="keywords"
+                            name="search"
                             onChange={props.onChange}
+                            value={props.filters.search}
                             className="border-b border-gray-300"
                         />
                     </label>

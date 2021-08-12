@@ -27,7 +27,7 @@ const AdminOneComplaint = props => {
         if(!$.isEmptyObject(props.data)){
             ComplaintsHandler.getOrderByComplaintKey(props.data.key)
             .then(res => {
-                props.fetchOrder(JSON.parse(res.data));
+                props.fetchOrder(res.data);
             })
             .catch(err => {
                 console.log(err)
@@ -68,8 +68,8 @@ const AdminOneComplaint = props => {
     }
 
     const execute = () => {
-        ComplaintsHandler.patchComplaint(props.data.id, {
-            status: props.data.status.id + 1
+        ComplaintsHandler.patchComplaint(props.data.key, {
+            status: props.data.status.pk + 1
         }, props.token)
         .then(res => {
             fetchComplaint();
@@ -135,14 +135,14 @@ const AdminOneComplaint = props => {
                     </table>
                     {!props.clientMode &&
                         <React.Fragment>
-                            {(props.data.status && props.data.status.id != 3) && 
+                            {(props.data.status && props.data.status.pk != 3) && 
                                 <div className="mt-10 w-screen">
                                     <button 
                                         className="bg-green-300 rounded-3xl p-2 px-10"
                                         onClick={execute}
                                     >
                                         <i className="fa fa-cog mr-3"></i>
-                                        {getExecuteTextByStatusId(props.data.status.id)}
+                                        {getExecuteTextByStatusId(props.data.status.pk)}
                                     </button>
                                 </div>
                             }

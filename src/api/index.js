@@ -75,7 +75,7 @@ class MessageHandler{
         formData.append('content', data.content);
         formData.append('sender_email', data.owner_email);
         formData.append('complaint', data.complaint);
-        data.images.forEach((img, index) => formData.append('file_' + index, img));
+        formData.append('images', JSON.stringify(data.images));
         axios.post(API + '/messages/', formData, {
             headers: {
                 'Content-Type': `multipart/form-data`,
@@ -129,8 +129,8 @@ class ComplaintsHandler{
         .catch(err => reject(err.response))
     })
 
-    static patchComplaint = (id, data, token) => new Promise((resolve, reject) => {
-        axios.patch(API + `/complaints/${id}/`, data, {
+    static patchComplaint = (key, data, token) => new Promise((resolve, reject) => {
+        axios.patch(API + `/complaints/${key}/`, data, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
@@ -142,8 +142,8 @@ class ComplaintsHandler{
         .catch(err => reject(err.response))
     })
 
-    static deleteComplaint = (id, token) => new Promise((resolve, reject) => {
-        axios.put(API + `/complaints/${id}/`, {
+    static deleteComplaint = (key, token) => new Promise((resolve, reject) => {
+        axios.put(API + `/complaints/${key}/`, {
             headers: {
                 'Authorization': `Token ${token}`
             }

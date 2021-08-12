@@ -2,11 +2,11 @@ import types from './types';
 
 const initState = {
     filters: {
-        from_date: '',
-        to_date: '',
-        status_id: '',
-        reason_id: '',
-        keywords: '',
+        min_date: '',
+        max_date: '',
+        status: '',
+        reason: '',
+        search: '',
         page: 1
     }
 }

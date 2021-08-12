@@ -33,8 +33,8 @@ const Index = props => {
         e.preventDefault();
         let data = props.formData;
         let res = await ComplaintsHandler.checkIfExistsByDocumentNumber(data.document_number);
+        console.log(res)
         if(!res.data.result){
-            console.log(res)
             return Notifications.create('error', 'Podany nr dokumentu nie istnieje')
         }
         ComplaintsHandler.postComplaint(data)
@@ -44,18 +44,26 @@ const Index = props => {
         })
         .catch(err => {
             console.log(err)
-            Notifications.create('error', err.response);
+            for(const [key, val] of Object.entries(err.data)){
+                //create
+            }
         })
     }
 
     if(!$.isEmptyObject(props.result)){
-        console.log(props.result)
         return(
             <div className="text-center bg-green-400 pt-32 pb-36" style={{ marginTop: '-23px', marginBottom: '-140px' }}>
                 <i className="fa fa-check text-green-600 text-9xl"></i>
                 <p className="text-green-600 text-xl mt-10">Twoja reklamacja została zapisana</p>
                 <div className="my-64">
-                    Za chwilę otrzymasz link do reklamacji na podany adres email
+                    Możesz śledzić reklamację pod linkiem
+                    <br/>
+                    <Link 
+                        to={`/complaint/${props.result.key}`}
+                        className="text-blue-800"
+                    >{window.location.href}complaint/{props.result.key}</Link>.
+                    <br/>
+                    Ten link otrzymasz za chwilę również na adres email.
                 </div>
             </div>
         )

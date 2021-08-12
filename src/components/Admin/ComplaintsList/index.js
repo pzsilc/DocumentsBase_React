@@ -30,7 +30,7 @@ const AdminComplaintsList = props => {
     const updateComplaints = () => {
         ComplaintsHandler.getComplaints(props.filters, props.token)
         .then(res => {
-            props.fetchComplaintsList(res.data);
+            props.fetchComplaintsList(res.results);
             props.setNumOfPages(res.num_of_pages);
         })
         .catch(() => Notifications.create('error', 'Nie udało się pobrać reklamacji'));
