@@ -1,9 +1,0 @@
-const UPDATE_INPUT = 'UPDATE_INPUT';
-const FETCH_ADMIN = 'FETCH_ADMIN';
-const SET_ERROR = 'SET_ERROR';
-
-export default {
-    UPDATE_INPUT,
-    FETCH_ADMIN,
-    SET_ERROR
-}

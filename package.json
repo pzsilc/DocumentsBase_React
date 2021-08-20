@@ -1,8 +1,8 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "backendUrl": "http://127.0.0.1:8000",
-  "complaintExpiriationDays": 30,
+  "tokenKey": "hh58u93k02--vj9j9o32kjkh499sh83k2h34h3fjc0v0c-4r49",
+  "backendUrl": "http://192.168.0.234/documents-base/backend/",
   "private": true,
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^28.0.0",
@@ -22,6 +22,7 @@
     "react-dropzone": "^11.3.4",
     "react-image-gallery": "^1.2.4",
     "react-image-zoom": "^1.3.1",
+    "react-modal": "^3.14.3",
     "react-multiple-image-input": "^1.0.0",
     "react-multiple-image-uploader": "^1.0.3",
     "react-notifications": "^1.7.2",

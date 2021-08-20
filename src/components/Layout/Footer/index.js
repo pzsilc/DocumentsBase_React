@@ -1,20 +1,13 @@
 import React from 'react';
 
-
 const Footer = () => {
-    let year = new Date().getFullYear();
     return(
-        <footer className="text-center bg-gray-900 py-4 mt-10 text-gray-700 font-bold flex justify-around">
-            <div>
-                <img 
-                    src="/pink-logo.png" 
-                    alt="Pink Logo"
-                    width="150"
-                />
-            </div>
-            <div className="mt-5">
-                Copyright &copy; {year}
-            </div>
+        <footer
+            className="text-white py-5 text-center"
+            style={{ backgroundColor: '#0d1d4a' }}
+        >
+            <p className="h5">Documents database</p>
+            <p>&copy; Silcare {new Date().getFullYear()}</p>
         </footer>
     )
 }

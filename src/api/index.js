@@ -1,220 +1,118 @@
 import axios from 'axios';
 import packageJson from '../../package.json';
-import FormData from 'form-data'
-const API = packageJson.backendUrl + '/api';
+import { assign } from '../functions';
+const API = packageJson.backendUrl + 'api/';
 
 
-class ReasonsHandler{
-    static getReasons = () => new Promise((resolve, reject) => {
-        axios.get(API + '/reasons/')
-        .then(res => res.data)
-        .then(res => resolve(res))
-        .catch(err => reject(err.response))
+const getUser = token => new Promise((resolve, reject) => {
+    axios.get(API + 'auth/user/', { 
+        headers: { 
+            'Authorization': token 
+        } 
     })
+    .then(resolve)
+    .catch(reject)
+})
 
-    static postReason = data => new Promise((resolve, reject) => {
-        axios.post(API + '/reasons/', data, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
-        .then(res => res.data)
-        .then(res => resolve(res))
-        .catch(err => reject(err.response))
+const login = (email, token) => new Promise((resolve, reject) => {
+    axios.post(API + 'auth/login/', assign({ email, token }), {
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
     })
+    .then(resolve)
+    .catch(reject)
+})
 
-    static patchReason = data => new Promise((resolve, reject) => {
-        axios.patch(API + `/reasons/${data.id}/`, data, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
-        .then(res => res.data)
-        .then(res => resolve(res))
-        .catch(err => reject(err.response))
+const logout = token => new Promise((resolve, reject) => {
+    axios.post(API + 'auth/logout/', {}, { 
+        headers: { 
+            'Authorization': token
+        } 
     })
+    .then(resolve)
+    .catch(reject)
+})
 
-    static deleteReasons = id => new Promise((resolve, reject) => {
-        axios.delete(API + `/reasons/${id}/`)
-        .then(res => res.data)
-        .then(res => resolve(res))
-        .catch(err => reject(err.response))
+const getCategories = () => new Promise((resolve, reject) => {
+    axios.get(API + 'categories/')
+    .then(resolve)
+    .catch(reject)
+})
+
+const getDocuments = (token, category, filters = null, page = 1) => new Promise((resolve, reject) => {
+    let vars = '';
+    if(filters){
+        for(const [key, value] of Object.entries(filters)){
+            vars += '&' + key + '=' + value;
+        }
+    }
+    if(page){
+        vars += '&page=' + page;
+    }
+    axios.get(API + 'documents/?category=' + category + vars, { 
+        headers: { 
+            'Authorization': token 
+        } 
     })
-}
+    .then(resolve)
+    .catch(reject)
+})
 
-
-
-class StatusesHandler{
-    static getStatuses = () => new Promise((resolve, reject) => {
-        axios.get(API + '/statuses/')
-        .then(res => res.data)
-        .then(res => resolve(res))
-        .catch(err => reject(err.response))
+const getDocumentDetails = (token, id) => new Promise((resolve, reject) => {
+    axios.get(API + `documents/${id}/`, {
+        headers: {
+            'Authorization': token
+        }
     })
+    .then(resolve)
+    .catch(reject)
+})
 
-    static postStatus = data => new Promise((resolve, reject) => {
-        axios.post(API + '/statuses/', data, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
-        .then(res => res.data)
-        .then(res => resolve(res))
-        .catch(err => reject(err.response))
+const createDocument = (token, number, files, category) => new Promise((resolve, reject) => {
+    const images = JSON.stringify(files.map(file => file.localUrl));
+    axios.post(API + 'documents/', assign({ images, number, category }), { 
+        headers: { 
+            'Authorization': token,
+            'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data' 
+        } 
     })
-}
+    .then(resolve)
+    .catch(reject)
+})
 
-
-
-class MessageHandler{
-    static postMessage = data => new Promise((resolve, reject) => {
-        let formData = new FormData();
-        formData.append('content', data.content);
-        formData.append('sender_email', data.owner_email);
-        formData.append('complaint', data.complaint);
-        formData.append('images', JSON.stringify(data.images));
-        axios.post(API + '/messages/', formData, {
-            headers: {
-                'Content-Type': `multipart/form-data`,
-                'Accept': 'application/json'
-            }
-        })
-        .then(res => res.data)
-        .then(res => resolve(res))
-        .catch(err => reject(err))
+const deleteDocument = (token, id) => new Promise((resolve, reject) => {
+    axios.delete(API + 'documents/' + id + '/', { 
+        headers: { 
+            'Authorization': token
+        } 
     })
-}
+    .then(resolve)
+    .catch(reject)
+})
 
-
-
-class ComplaintsHandler{
-    static getComplaints = (filters, token) => new Promise((resolve, reject) => {
-        let vars = filters ? Object.keys(filters).map(key => key + '=' + filters[key]).join('&') : "";
-        axios.get(API + `/complaints/?${vars}`, {
-            headers: {
-                'Authorization': `Token ${token}`
-            }
-        })
-        .then(res => res.data)
-        .then(res => resolve(res))
-        .catch(err => reject(err.response))
+const downloadZipWithFiles = (token, id) => new Promise((resolve, reject) => {
+    axios.get(API + `documents/${id}/files/`, { 
+        headers: { 
+            'Authorization': token
+        } 
     })
-
-    static getOneComplaint = key => new Promise((resolve, reject) => {
-        axios.get(API + `/complaints/${key}/`)
-        .then(res => res.data)
-        .then(res => resolve(res))
-        .catch(err => reject(err.response))
-    })
-
-    static postComplaint = data => new Promise((resolve, reject) => {
-        let formData = new FormData();
-        formData.append('title', data.title);
-        formData.append('description', document.querySelector('textarea[name="_description"]').value);
-        formData.append('reason', data.reason);
-        formData.append('document_number', data.document_number);
-        formData.append('email', data.email);
-        formData.append('images', JSON.stringify(data.images));
-        axios.post(API + '/complaints/', formData, {
-            headers: {
-                'Content-Type': `multipart/form-data`,
-                'Accept': 'application/json'
-            }
-        })
-        .then(res => res.data)
-        .then(res => resolve(res))
-        .catch(err => reject(err.response))
-    })
-
-    static patchComplaint = (key, data, token) => new Promise((resolve, reject) => {
-        axios.patch(API + `/complaints/${key}/`, data, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Token ${token}`
-            }
-        })
-        .then(res => res.data)
-        .then(res => resolve(res))
-        .catch(err => reject(err.response))
-    })
-
-    static deleteComplaint = (key, token) => new Promise((resolve, reject) => {
-        axios.put(API + `/complaints/${key}/`, {
-            headers: {
-                'Authorization': `Token ${token}`
-            }
-        })
-        .then(res => res.data)
-        .then(res => resolve(res))
-        .catch(err => reject(err.response))
-    })
-
-    static checkIfExistsByDocumentNumber = document_number => new Promise((resolve, reject) => {
-        axios.get(API + `/documents/?code=${document_number}`)
-        .then(res => resolve(res))
-        .then(err => reject(err));
-    })
-
-    static getOrderByComplaintKey = key => new Promise((resolve, reject) => {
-        axios.get(API + `/documents/details/${key}/`)
-        .then(res => resolve(res))
-        .then(err => reject(err));
-    })
-}
-
-
-
-class AuthHandler{
-    static login = (username, password) => new Promise((resolve, reject) => {
-        axios.post(API + '/auth/login/', {
-            username,
-            password
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
-        .then(res => resolve(res))
-        .catch(err => reject(err))
-    })
-
-    static logout = token => new Promise((resolve, reject) => {
-        axios.post(API + '/auth/logout/', {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Token ${token}`
-            }
-        })
-        .then(res => resolve(res))
-        .catch(err => reject(err))
-    })
-
-    static getUserInfo = token => new Promise((resolve, reject) => {
-        axios.get(API + '/auth/user/', {
-            headers: {
-                'Authorization': `Token ${token}`
-            }
-        })
-        .then(res => resolve(res))
-        .catch(err => reject(err))
-    })
-}
-
-
-
-
+    .then(resolve)
+    .catch(reject)
+})
 
 
 export {
-    ReasonsHandler,
-    StatusesHandler,
-    MessageHandler,
-    ComplaintsHandler,
-    AuthHandler
+    getUser,
+    login,
+    logout,
+    getCategories,
+    getDocuments,
+    getDocumentDetails,
+    createDocument,
+    deleteDocument,
+    downloadZipWithFiles
 }
+

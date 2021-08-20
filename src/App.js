@@ -1,30 +1,30 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from "react-router-dom";
-import Header from './components/Layout/Header';
+import { BrowserRouter, Switch } from "react-router-dom";
+import { HeaderContainer } from './components/Layout/Header';
 import Footer from './components/Layout/Footer';
-import { IndexContainer } from './components/Index';
-import { ComplaintViewContainer } from './components/ComplaintView';
-import { AdminLoginContainer } from './components/Admin/Login';
-import { AdminLogoutContainer } from './components/Admin/Logout';
-import { AdminComplaintsListContainer } from './components/Admin/ComplaintsList';
-import { AdminOneComplaintContainer } from './components/Admin/OneComplaint';
+import { LoginContainer } from './components/Auth/Login';
+import { LogoutContainer } from './components/Auth/Logout';
+import { HomeContainer } from './components/Home';
+import { AddContainer } from './components/Add';
+import { ListContainer } from './components/List';
 import { LoggedRoute, GuestRoute } from './middlewares';
 import { NotificationContainer } from 'react-notifications';
+import { DocumentDetailsContainer } from './components/DocumentDetails';
 import 'react-notifications/lib/notifications.css';
 
 const App = () => {
     return(
         <BrowserRouter>
-            <Header/>
+            <HeaderContainer/>
             <NotificationContainer/>
-            <main className="py-24">
+            <main>
                 <Switch>
-                    <Route exact path='/' component={IndexContainer}/>
-                    <GuestRoute path='/complaint/:key' component={ComplaintViewContainer}/>
-                    <GuestRoute path='/admin/login' component={AdminLoginContainer}/>
-                    <LoggedRoute path='/admin/logout' component={AdminLogoutContainer}/>
-                    <LoggedRoute path='/admin/complaints/:key' component={AdminOneComplaintContainer}/>
-                    <LoggedRoute path='/admin' component={AdminComplaintsListContainer}/>
+                    <LoggedRoute exact path="/documents-base" component={HomeContainer} />
+                    <LoggedRoute path="/documents-base/add" component={AddContainer} />
+                    <GuestRoute path="/documents-base/login" component={LoginContainer} />
+                    <LoggedRoute path="/documents-base/logout" component={LogoutContainer} />
+                    <LoggedRoute path="/documents-base/list/:id" component={ListContainer} />
+                    <LoggedRoute path='/documents-base/documents/:id' component={DocumentDetailsContainer} />
                 </Switch>
             </main>
             <Footer/>

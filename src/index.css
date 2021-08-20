@@ -5,3 +5,41 @@
 #ReactSimpleImageViewer{
     z-index: 10000000000;
 }
+
+html{
+    overflow-x: hidden;
+}
+
+.btn-success{
+    background: #0d1d4a;
+    border-color: #0d1d4a;
+}
+
+.option:hover{
+    text-decoration: none;
+    color: white;
+    border-bottom: 5px solid hsl(224, 66%, 30%);
+}
+
+.document{
+    background-color: white;
+}
+
+.document:hover{
+    filter: brightness(40%);
+    cursor: pointer;
+}
+
+.single-pic{
+    filter: brightness(70%);
+}
+
+.single-pic:hover{
+    cursor: pointer;
+    filter: none;
+    transition: 0.5s;
+}
+
+.notification-container{
+    top: 70px;
+}
